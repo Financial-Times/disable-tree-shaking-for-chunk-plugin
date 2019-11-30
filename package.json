@@ -1,0 +1,33 @@
+{
+  "name": "disable-tree-shaking-for-chunk-plugin",
+  "version": "1.0.0",
+  "description": "This plugin for Webpack can disable tree shaking for all modules contained in a specific chunk. It is intended to help improve long-term caching and code reuse between project installations and builds.",
+  "main": "src/plugin.js",
+  "scripts": {
+    "lint": "prettier --config .prettierrc.json --list-different src/*.js",
+    "test": "npm run lint && jasmine test/*.test.js",
+    "webpack": "[ -d test/temp ] && rm -r test/temp; node test.js"
+  },
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "keywords": [
+    "webpack",
+    "plugin"
+  ],
+  "devDependencies": {
+    "jasmine": "^3.5.0",
+    "prettier": "^1.19.0",
+    "webpack": "^4.41.0"
+  },
+  "peerDependencies": {
+    "webpack": "^4.38.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:i-like-robots/disable-tree-shaking-for-chunk-plugin.git"
+  },
+  "homepage": "https://github.com/i-like-robots/disable-tree-shaking-for-chunk-plugin",
+  "author": "Matt Hinchliffe",
+  "license": "MIT"
+}

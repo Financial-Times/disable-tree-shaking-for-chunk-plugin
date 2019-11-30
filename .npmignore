@@ -1,0 +1,12 @@
+.nyc_output/
+assets/
+benchmark/
+coverage/
+temp/
+test/
+.editorconfig
+.prettierignore
+.prettierrc.json
+.travis.yml
+greenkeeper.json
+rollup.config.js
