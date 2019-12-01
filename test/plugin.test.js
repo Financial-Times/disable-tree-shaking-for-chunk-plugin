@@ -8,6 +8,11 @@ describe('Webpack plugin test', () => {
   beforeAll((done) => {
     webpack(config, (errors, stats) => {
       result = { errors, stats }
+
+      if (errors || stats.hasErrors()) {
+        console.error(errors || stats.toJson().errors.join('\n'))
+      }
+
       done()
     })
   })
@@ -20,8 +25,8 @@ describe('Webpack plugin test', () => {
   it('generates all chunks', () => {
     const chunks = result.stats.compilation.chunks.map((chunk) => chunk.name)
 
-    expect(chunks).toContain('external-lib-one')
-    expect(chunks).toContain('external-lib-two')
+    expect(chunks).toContain('external-utils')
+    expect(chunks).toContain('external-component')
 
     expect(chunks).toContain('module-a')
     expect(chunks).toContain('module-b')
@@ -39,11 +44,21 @@ describe('Webpack plugin test', () => {
     })
 
     it('prevents Webpack dropping any exports', () => {
-      const one = loadFile('external-lib-one.js')
-      const two = loadFile('external-lib-two.js')
+      const one = loadFile('external-utils.js')
+      const two = loadFile('external-component.js')
 
       expect(one).not.toContain('unused harmony export')
       expect(two).not.toContain('unused harmony export')
+    })
+
+    it('prevents export names from being mangled', () => {
+      const one = loadFile('external-utils.js')
+      const two = loadFile('external-component.js')
+
+      expect(one).toContain('__webpack_exports__, "debounce"')
+      expect(one).toContain('__webpack_exports__, "throttle"')
+      expect(one).toContain('__webpack_exports__, "broadcast"')
+      expect(two).toContain('__webpack_exports__, "default"')
     })
   })
 
@@ -67,6 +82,13 @@ describe('Webpack plugin test', () => {
 
       expect(a).toContain('unused harmony export')
       expect(b).toContain('unused harmony export')
+    })
+
+    it('allows export names to be mangled', () => {
+      const utils = loadFile('external-utils.js')
+
+      expect(utils).not.toContain('__webpack_exports__, "a1"')
+      expect(utils).not.toContain('__webpack_exports__, "b2"')
     })
   })
 })
