@@ -46,6 +46,13 @@ module.exports = {
 Matches the chunk name. It may be a string matched with strict equality, a regular expression for more complex string matching, or a function which will receive the chunk name as an argument and should return a boolean.
 
 
+## Prior Art
+
+This plugin is based upon Webpack's internal [`FlagInitialModulesAsUsedPlugin`][flag-plugin] by Tobias Koppers.
+
+[flag-plugin]: https://github.com/webpack/webpack/blob/webpack-4/lib/FlagInitialModulesAsUsedPlugin.js
+
+
 ## Development
 
 This project uses [Prettier] for automatic code formatting and is tested with [Jasmine].
