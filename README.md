@@ -1,5 +1,7 @@
 # Disable Tree Shaking For Chunk Plugin
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/i-like-robots/disable-tree-shaking-for-chunk-plugin.svg)](https://greenkeeper.io/)
+
 This plugin for [Webpack] can disable tree shaking for all modules contained in a specific chunk. It is intended to help improve long-term caching and code reuse between project installations and builds.
 
 [Webpack]: https://webpack.js.org/
