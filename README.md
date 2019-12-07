@@ -46,6 +46,56 @@ module.exports = {
 Matches the chunk name. It may be a string matched with strict equality, a regular expression for more complex string matching, or a function which will receive the chunk name as an argument and should return a boolean.
 
 
+## Example
+
+Below demonstrates part of a Webpack configuration file which sets up code splitting for a project. It has two groups defined, one using an array of package names and another with a regular expression.
+
+An instance of this plugin is created for each group with the `test` parameter configured to match all of the generated chunks.
+
+```js
+const DisableTreeShakingForChunk = require('disable-tree-shaking-for-chunk-plugin')
+
+const commonLibraries = ['react', 'redux', 'regenerator-runtime']
+
+const designSystemComponent = /node_modules\/@organisation\/component-/
+
+module.exports = {
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commonLibraries: {
+          test(module) {
+            const packageName = extractPackageName(module.context)
+            return packageName ? commonLibraries.includes(packageName) : false
+          },
+          name(module) {
+            return extractPackageName(module.context)
+          }
+        },
+        designSystemComponents: {
+          test(module) {
+            return designSystemComponent.test(module.context)
+          },
+          name(module) {
+            const packageName = extractPackageName(module.context)
+            return packageName.replace('@', '').replace('/', '--')
+          }
+        }
+      }
+    }
+  },
+  plugins: [
+    new DisableTreeShakingForChunk({
+      test: (chunkName) => commonLibraries.includes(chunkName)
+    }),
+    new DisableTreeShakingForChunk({
+      test: /^organisation--component-/
+    })
+  ]
+}
+```
+
+
 ## Prior Art
 
 This plugin is based upon Webpack's internal [`FlagInitialModulesAsUsedPlugin`][flag-plugin] by Tobias Koppers.
