@@ -41,9 +41,9 @@ module.exports = {
 
 ## Options
 
-### `test` (string, RegExp, Function)
+### `test` (string, RegExp, Function, Array, Set)
 
-Matches the chunk name. It may be a string matched with strict equality, a regular expression for more complex string matching, or a function which will receive the chunk name as an argument and should return a boolean.
+Matches the chunk name. It may be a string matched with strict equality, a regular expression for more complex string matching, a function which will receive the chunk name as an argument and should return a boolean, or an array or set of strings.
 
 
 ## Example
@@ -65,11 +65,11 @@ module.exports = {
       cacheGroups: {
         commonLibraries: {
           test(module) {
-            const packageName = extractPackageName(module.context)
+            const packageName = getPackageName(module.context)
             return packageName ? commonLibraries.includes(packageName) : false
           },
           name(module) {
-            return extractPackageName(module.context)
+            return getPackageName(module.context)
           }
         },
         designSystemComponents: {
@@ -77,7 +77,7 @@ module.exports = {
             return designSystemComponent.test(module.context)
           },
           name(module) {
-            const packageName = extractPackageName(module.context)
+            const packageName = getPackageName(module.context)
             return packageName.replace('@', '').replace('/', '--')
           }
         }
@@ -86,7 +86,7 @@ module.exports = {
   },
   plugins: [
     new DisableTreeShakingForChunk({
-      test: (chunkName) => commonLibraries.includes(chunkName)
+      test: commonLibraries
     }),
     new DisableTreeShakingForChunk({
       test: /^organisation--component-/
