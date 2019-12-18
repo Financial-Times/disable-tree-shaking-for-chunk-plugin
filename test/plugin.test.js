@@ -2,7 +2,7 @@ const webpack = require('webpack')
 const loadFile = require('./helpers/loadFile')
 const config = require('./fixtures/webpack.config')
 
-describe('Webpack plugin test', () => {
+describe('src/plugin', () => {
   let result
 
   beforeAll((done) => {
