@@ -18,8 +18,11 @@ class DisableTreeShakingForChunkPlugin {
 
         targetChunks.forEach((targetChunk) => {
           targetChunk.modulesIterable.forEach((m) => {
-            m.used = true
-            m.usedExports = true
+            if (m.type.startsWith('javascript/')) {
+              m.used = true
+              m.usedExports = true
+              m.buildMeta.providedExports = true
+            }
           })
         })
       })
