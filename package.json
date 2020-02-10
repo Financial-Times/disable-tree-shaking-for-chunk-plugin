@@ -1,6 +1,6 @@
 {
   "name": "disable-tree-shaking-for-chunk-plugin",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "This plugin for Webpack can disable tree shaking for all modules contained in a specific chunk. It is intended to help improve long-term caching and code reuse between project installations and builds.",
   "main": "src/plugin.js",
   "scripts": {
