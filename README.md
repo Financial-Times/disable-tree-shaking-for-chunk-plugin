@@ -48,16 +48,12 @@ Matches the chunk name. It may be a string matched with strict equality, a regul
 
 ## Example
 
-Below demonstrates part of a Webpack configuration file which sets up code splitting for a project. It has two groups defined, one using an array of package names and another with a regular expression.
-
-An instance of this plugin is created for each group with the `test` parameter configured to match all of the generated chunks.
+Below demonstrates part of a Webpack configuration file which sets up code splitting for a project. It has one cache group defined which will create a separate chunk for each package defined in the array.
 
 ```js
 const DisableTreeShakingForChunk = require('disable-tree-shaking-for-chunk-plugin')
 
 const commonLibraries = ['react', 'redux', 'regenerator-runtime']
-
-const designSystemComponent = /node_modules\/@organisation\/component-/
 
 module.exports = {
   optimization: {
@@ -71,15 +67,6 @@ module.exports = {
           name(module) {
             return getPackageName(module.context)
           }
-        },
-        designSystemComponents: {
-          test(module) {
-            return designSystemComponent.test(module.context)
-          },
-          name(module) {
-            const packageName = getPackageName(module.context)
-            return packageName.replace('@', '').replace('/', '--')
-          }
         }
       }
     }
@@ -87,9 +74,6 @@ module.exports = {
   plugins: [
     new DisableTreeShakingForChunk({
       test: commonLibraries
-    }),
-    new DisableTreeShakingForChunk({
-      test: /^organisation--component-/
     })
   ]
 }
