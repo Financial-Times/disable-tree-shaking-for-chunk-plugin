@@ -2,7 +2,7 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/i-like-robots/disable-tree-shaking-for-chunk-plugin/blob/master/LICENSE) [![Build Status](https://travis-ci.org/i-like-robots/disable-tree-shaking-for-chunk-plugin.svg?branch=master)](https://travis-ci.org/i-like-robots/disable-tree-shaking-for-chunk-plugin) [![npm version](https://img.shields.io/npm/v/disable-tree-shaking-for-chunk-plugin.svg?style=flat)](https://www.npmjs.com/package/disable-tree-shaking-for-chunk-plugin) [![Greenkeeper badge](https://badges.greenkeeper.io/i-like-robots/disable-tree-shaking-for-chunk-plugin.svg)](https://greenkeeper.io/)
 
-This plugin for [Webpack 4] can disable tree shaking for all modules contained in a specific chunk. It is intended to help improve long-term caching and code reuse between project installations and builds.
+This plugin for [Webpack 4] can disable tree shaking for all modules contained in specified chunks. It is intended to help improve long-term caching and code reuse between project installations and builds.
 
 [Webpack 4]: https://webpack.js.org/
 
@@ -78,6 +78,11 @@ module.exports = {
   ]
 }
 ```
+
+
+## Motivation
+
+By default when running Webpack in production mode it will try to track the properties exported by JavaScript modules and flag when the module is imported and which of those properties is used. It's this clever tracking of "used exports" that enables [tree shaking](https://webpack.js.org/guides/tree-shaking/) by "pruning" any unused properties. Usually, this is a useful feature as it enables us to ship less code to our users but for cases where we'd like our compiled code to be cached for a long time or be reused by separate applications we need to disable it because how the module may be used over time and by different apps is unknown.
 
 
 ## Prior Art
