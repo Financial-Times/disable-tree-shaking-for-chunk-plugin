@@ -1,4 +1,5 @@
 const isTargetChunk = require('./isTargetChunk')
+const markAsUsed = require('./markAsUsed')
 
 const PluginName = 'DisableTreeShakingForChunkPlugin'
 
@@ -19,9 +20,7 @@ class DisableTreeShakingForChunkPlugin {
         targetChunks.forEach((targetChunk) => {
           targetChunk.modulesIterable.forEach((m) => {
             if (m.type.startsWith('javascript/')) {
-              m.used = true
-              m.usedExports = true
-              m.buildMeta.providedExports = true
+              markAsUsed(m)
             }
           })
         })
