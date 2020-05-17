@@ -39,6 +39,10 @@ describe('src/plugin', () => {
       chunks.forEach((chunk) => {
         chunk.modulesIterable.forEach((m) => {
           expect(m.usedExports).toBe(true)
+
+          if (m.rootModule) {
+            expect(m.rootModule.usedExports).toBe(true)
+          }
         })
       })
     })

@@ -1,3 +1,4 @@
+const ConcatenatedModule = require('webpack/lib/optimize/ConcatenatedModule')
 const isTargetChunk = require('./isTargetChunk')
 const markAsUsed = require('./markAsUsed')
 
@@ -21,6 +22,10 @@ class DisableTreeShakingForChunkPlugin {
           targetChunk.modulesIterable.forEach((m) => {
             if (m.type.startsWith('javascript/')) {
               markAsUsed(m)
+
+              if (m instanceof ConcatenatedModule) {
+                markAsUsed(m.rootModule)
+              }
             }
           })
         })
