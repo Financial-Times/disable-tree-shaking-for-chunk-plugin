@@ -6,16 +6,19 @@
   "scripts": {
     "lint": "prettier --config .prettierrc.json --list-different src/*.js",
     "test": "npm run lint && jasmine test/*.test.js",
-    "webpack": "[ -d test/temp ] && rm -r test/temp; node test.js"
+    "webpack": "[ -d test/temp ] && rm -r test/temp; node test.js",
+    "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine"
   },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": "12.x",
+    "npm": "7.x || 8.x"
   },
   "keywords": [
     "webpack",
     "plugin"
   ],
   "devDependencies": {
+    "check-engine": "^1.10.1",
     "jasmine": "^3.5.0",
     "prettier": "^2.0.0",
     "webpack": "^4.41.0"
@@ -28,6 +31,13 @@
     "url": "git@github.com:Financial-Times/disable-tree-shaking-for-chunk-plugin.git"
   },
   "homepage": "https://github.com/Financial-Times/disable-tree-shaking-for-chunk-plugin",
-  "contributors": ["Matt Hinchliffe", "Financial Times"],
-  "license": "MIT"
+  "contributors": [
+    "Matt Hinchliffe",
+    "Financial Times"
+  ],
+  "license": "MIT",
+  "volta": {
+    "node": "12.22.9",
+    "npm": "8.3.1"
+  }
 }
