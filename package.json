@@ -25,9 +25,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:i-like-robots/disable-tree-shaking-for-chunk-plugin.git"
+    "url": "git@github.com:Financial-Times/disable-tree-shaking-for-chunk-plugin.git"
   },
-  "homepage": "https://github.com/i-like-robots/disable-tree-shaking-for-chunk-plugin",
-  "author": "Matt Hinchliffe",
+  "homepage": "https://github.com/Financial-Times/disable-tree-shaking-for-chunk-plugin",
+  "contributors": ["Matt Hinchliffe", "Financial Times"],
   "license": "MIT"
 }
