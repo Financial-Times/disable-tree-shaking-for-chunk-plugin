@@ -1,4 +1,6 @@
 const webpack = require('webpack')
+const { mergeRuntimeOwned, getEntryRuntime } = require('webpack/lib/util/runtime')
+const NormalModule = require('webpack/lib/NormalModule')
 const loadFile = require('./helpers/loadFile')
 const config = require('./fixtures/webpack.config')
 
@@ -23,7 +25,7 @@ describe('src/plugin', () => {
   })
 
   it('generates all chunks', () => {
-    const chunks = result.stats.compilation.chunks.map((chunk) => chunk.name)
+    const chunks = Array.from(result.stats.compilation.chunks).map((chunk) => chunk.name)
 
     expect(chunks).toContain('external-utils')
     expect(chunks).toContain('external-component')
@@ -34,14 +36,20 @@ describe('src/plugin', () => {
 
   describe('in target chunks', () => {
     it('disables tracking of exports for each module', () => {
-      const chunks = result.stats.compilation.chunks.filter((chunk) => /^external-/.test(chunk.name))
+      const { compilation } = result.stats
+      const { moduleGraph } = compilation
+      const chunks = Array.from(compilation.chunks).filter((chunk) => /^external-/.test(chunk.name))
+
+      runtime = getEntryRuntime(compilation, 'scripts', compilation.entries.get('scripts').options)
 
       chunks.forEach((chunk) => {
-        chunk.modulesIterable.forEach((m) => {
-          expect(m.usedExports).toBe(true)
+        compilation.chunkGraph.getChunkModulesIterable(chunk).forEach((m) => {
+          const ei = moduleGraph.getExportsInfo(m)
+          expect(ei.getUsedExports(runtime)).toBe(true)
 
           if (m.rootModule) {
-            expect(m.rootModule.usedExports).toBe(true)
+            const rei = moduleGraph.getExportsInfo(m.rootModule)
+            expect(rei.getUsedExports(runtime)).toBe(true)
           }
         })
       })
@@ -59,22 +67,28 @@ describe('src/plugin', () => {
       const one = loadFile('external-utils.js')
       const two = loadFile('external-component.js')
 
-      expect(one).toContain('__webpack_exports__, "debounce"')
-      expect(one).toContain('__webpack_exports__, "throttle"')
-      expect(one).toContain('__webpack_exports__, "broadcast"')
-      expect(two).toContain('__webpack_exports__, "default"')
+      expect(one).toContain('/* harmony export */   "debounce"')
+      expect(one).toContain('/* harmony export */   "throttle"')
+      expect(one).toContain('/* harmony export */   "broadcast"')
+      expect(two).toContain('/* harmony export */   "default"')
     })
   })
 
   describe('in other chunks', () => {
     it('does not disable tracking', () => {
-      const chunks = result.stats.compilation.chunks.filter((chunk) => !/^external-/.test(chunk.name))
+      const { compilation } = result.stats
+      const { moduleGraph } = compilation
+      const chunks = Array.from(compilation.chunks).filter(
+        (chunk) => !/^external-/.test(chunk.name)
+      )
 
+      runtime = getEntryRuntime(compilation, 'scripts', compilation.entries.get('scripts').options)
       chunks.forEach((chunk) => {
-        chunk.modulesIterable.forEach((m) => {
+        compilation.chunkGraph.getChunkModulesIterable(chunk).forEach((m) => {
           // An entry module has no exports so ignore it
-          if (!m.isEntryModule()) {
-            expect(Array.isArray(m.usedExports)).toBe(true)
+          if (m instanceof NormalModule && !compilation.chunkGraph.isEntryModule(m)) {
+            const ei = moduleGraph.getExportsInfo(m)
+            expect(ei.getUsedExports(runtime)).toBeInstanceOf(Set)
           }
         })
       })
