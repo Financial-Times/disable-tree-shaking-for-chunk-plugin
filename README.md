@@ -1,10 +1,10 @@
 # Disable Tree Shaking For Chunk Plugin
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/i-like-robots/disable-tree-shaking-for-chunk-plugin/blob/master/LICENSE) [![Build Status](https://travis-ci.org/i-like-robots/disable-tree-shaking-for-chunk-plugin.svg?branch=master)](https://travis-ci.org/i-like-robots/disable-tree-shaking-for-chunk-plugin) [![npm version](https://img.shields.io/npm/v/disable-tree-shaking-for-chunk-plugin.svg?style=flat)](https://www.npmjs.com/package/disable-tree-shaking-for-chunk-plugin) [![Greenkeeper badge](https://badges.greenkeeper.io/i-like-robots/disable-tree-shaking-for-chunk-plugin.svg)](https://greenkeeper.io/)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Financial-Times/disable-tree-shaking-for-chunk-plugin/blob/main/LICENSE) [![Build Status](https://circleci.com/gh/Financial-Times/disable-tree-shaking-for-chunk-plugin.svg)](https://app.circleci.com/pipelines/github/Financial-Times/disable-tree-shaking-for-chunk-plugin) [![npm version](https://img.shields.io/npm/v/disable-tree-shaking-for-chunk-plugin.svg?style=flat)](https://www.npmjs.com/package/disable-tree-shaking-for-chunk-plugin)
 
-This plugin for [Webpack 4] can disable tree shaking for all modules contained in specified chunks. It is intended to help improve long-term caching and code reuse between project installations and builds.
+This plugin for [Webpack 5] can disable tree shaking for all modules contained in specified chunks. It is intended to help improve long-term caching and code reuse between project installations and builds.
 
-[Webpack 4]: https://webpack.js.org/
+[Webpack 5]: https://webpack.js.org/
 
 
 ## Installation
