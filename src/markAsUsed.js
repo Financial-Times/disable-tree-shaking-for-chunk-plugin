@@ -1,8 +1,8 @@
-module.exports = (m, mg, rt) => {
-  const ei = mg.getExportsInfo(m)
-  ei.setUsedInUnknownWay(rt)
-  if (m.factoryMeta === undefined) {
-    m.factoryMeta = {}
+module.exports = (module, moduleGraph, runtime) => {
+  const exportsInfo = moduleGraph.getExportsInfo(module)
+  exportsInfo.setUsedInUnknownWay(runtime)
+  if (module.factoryMeta === undefined) {
+    module.factoryMeta = {}
   }
-  m.factoryMeta.sideEffectFree = false
+  module.factoryMeta.sideEffectFree = false
 }

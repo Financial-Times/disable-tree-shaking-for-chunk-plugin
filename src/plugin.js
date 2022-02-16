@@ -27,12 +27,12 @@ class DisableTreeShakingForChunkPlugin {
         }
 
         targetChunks.forEach((targetChunk) => {
-          compilation.chunkGraph.getChunkModulesIterable(targetChunk).forEach((m) => {
-            if (m.type.startsWith('javascript/')) {
-              markAsUsed(m, moduleGraph, runtime)
+          compilation.chunkGraph.getChunkModulesIterable(targetChunk).forEach((module) => {
+            if (module.type.startsWith('javascript/')) {
+              markAsUsed(module, moduleGraph, runtime)
 
-              if (m instanceof ConcatenatedModule) {
-                markAsUsed(m.rootModule, moduleGraph, runtime)
+              if (module instanceof ConcatenatedModule) {
+                markAsUsed(module.rootModule, moduleGraph, runtime)
               }
             }
           })
