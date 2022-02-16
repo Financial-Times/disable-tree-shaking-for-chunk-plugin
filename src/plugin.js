@@ -1,4 +1,5 @@
 const ConcatenatedModule = require('webpack/lib/optimize/ConcatenatedModule')
+const { mergeRuntimeOwned, getEntryRuntime } = require('webpack/lib/util/runtime')
 const isTargetChunk = require('./isTargetChunk')
 const markAsUsed = require('./markAsUsed')
 
@@ -15,16 +16,23 @@ class DisableTreeShakingForChunkPlugin {
 
   apply(compiler) {
     compiler.hooks.compilation.tap(PluginName, (compilation) => {
+      const { moduleGraph } = compilation
       compilation.hooks.afterOptimizeChunkModules.tap(PluginName, (chunks) => {
-        const targetChunks = chunks.filter((chunk) => isTargetChunk(chunk.name, this.test))
+        const targetChunks = Array.from(chunks).filter((chunk) =>
+          isTargetChunk(chunk.name, this.test)
+        )
+        let runtime = undefined
+        for (const [name, { options }] of compilation.entries) {
+          runtime = mergeRuntimeOwned(runtime, getEntryRuntime(compilation, name, options))
+        }
 
         targetChunks.forEach((targetChunk) => {
-          targetChunk.modulesIterable.forEach((m) => {
-            if (m.type.startsWith('javascript/')) {
-              markAsUsed(m)
+          compilation.chunkGraph.getChunkModulesIterable(targetChunk).forEach((module) => {
+            if (module.type.startsWith('javascript/')) {
+              markAsUsed(module, moduleGraph, runtime)
 
-              if (m instanceof ConcatenatedModule) {
-                markAsUsed(m.rootModule)
+              if (module instanceof ConcatenatedModule) {
+                markAsUsed(module.rootModule, moduleGraph, runtime)
               }
             }
           })
