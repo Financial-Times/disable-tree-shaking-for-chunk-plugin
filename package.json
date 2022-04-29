@@ -10,7 +10,7 @@
     "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine"
   },
   "engines": {
-    "node": "12.x",
+    "node": ">=12.x",
     "npm": "7.x || 8.x"
   },
   "keywords": [
