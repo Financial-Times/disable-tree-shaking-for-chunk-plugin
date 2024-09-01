@@ -1,3 +1,5 @@
+"use strict"
+
 const ConcatenatedModule = require('webpack/lib/optimize/ConcatenatedModule')
 const { mergeRuntimeOwned, getEntryRuntime } = require('webpack/lib/util/runtime')
 const isTargetChunk = require('./isTargetChunk')
