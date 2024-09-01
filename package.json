@@ -10,7 +10,7 @@
     "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine"
   },
   "engines": {
-    "node": "16.x",
+    "node": "20.x",
     "npm": "7.x || 8.x"
   },
   "keywords": [
@@ -37,7 +37,7 @@
   ],
   "license": "MIT",
   "volta": {
-    "node": "16.14.0",
+    "node": "20.17.0",
     "npm": "8.3.1"
   }
 }
